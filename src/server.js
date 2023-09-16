@@ -3,10 +3,10 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { typeDefs, resolvers } from "./schema.js";
 import { getUser } from "./users/users.utils.js";
+import { db } from "./db/index.js";
 import http from "http";
 
-const PORT = process.env.PORT
-
+const PORT = process.env.PORT;
 const apollo = new ApolloServer({
   typeDefs,
   resolvers,
@@ -21,7 +21,7 @@ const apollo = new ApolloServer({
       } = ctx;
       return {
         loggedInUser: context.loggedInUser,
-      }
+      };
     }
   },
   subscriptions: {
@@ -41,11 +41,11 @@ const apollo = new ApolloServer({
 });
 
 const app = express();
+db();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-
-app.use('/healthcheck', require('express-healthcheck')());
+app.use("/healthcheck", require("express-healthcheck")());
 
 app.use(logger("tiny"));
 apollo.applyMiddleware({ app });

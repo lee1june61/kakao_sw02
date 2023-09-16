@@ -3,12 +3,12 @@ import { gql } from "apollo-server";
 export default gql`
   type User {
     _id:         Int!
-    identity     String!
-    password     String!
-    nickname     String!
-    affiliation  Militarytype!
-    phonenumber  String!
-    militaraybase String!
+    identity:     String!
+    password:     String!
+    nickname:     String!
+    affiliation:  Militarytype!
+    phonenumber:  String!
+    militaraybase: String!
   }
 
   enum Militarytype {
@@ -16,5 +16,9 @@ export default gql`
     "해군",
     "공군",
     "육본"
+  }
+
+  type Query {
+    dummy:String
   }
 `;
