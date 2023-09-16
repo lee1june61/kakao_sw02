@@ -1,2 +1,2 @@
-# kakao_sw02
-kakao_sw02
+# kakao_sw02_backend
+kakao_sw02_backend
