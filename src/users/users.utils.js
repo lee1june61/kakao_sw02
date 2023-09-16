@@ -7,12 +7,12 @@ export const getUser = async (token) => {
       return null;
     }
     const { id } = await jwt.verify(token, process.env.SECRET_KEY);
-    
+
     const user = {
-        id: 1,
-        username: "25div",
-        activate: true,
-    }
+      id: 1,
+      username: "25div",
+      activate: true,
+    };
     if (user) {
       return user;
     } else {
