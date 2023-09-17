@@ -34,3 +34,14 @@ export function protectedResolver(ourResolver) {
     return ourResolver(root, args, context, info);
   };
 }
+
+export async function signupUser(
+  { id, password, nickname, role, affiliation, phonenumber, militaraybase },
+  { req }
+) {}
+
+export async function login(parent, context) {}
+
+export async function logoutUser(parent, content, info) {}
+export async function TokenResponse(parent, content, info) {}
+export async function getMe(parent, content, info) {}
