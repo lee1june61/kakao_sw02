@@ -1,4 +1,4 @@
-import { protectedResolver } from "../../users/users.utils.js";
+/*import { protectedResolver } from "../../users/users.utils.js";
 import { NEW_MESSAGE } from "../../constants";
 import { CHATROOM_UPDATE } from "../../constants"
 import pubsub from "../../pubsub";
@@ -126,4 +126,4 @@ export default {
       }
     }),
   },
-};
+};*/
