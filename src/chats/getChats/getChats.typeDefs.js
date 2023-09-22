@@ -1,12 +1,12 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type sendMessageResult {
+  type getChatsResult {
     ok: Boolean!
     error: String
-    message: String
+    Chats: [Message]
   }
   type Mutation {
-    sendMessage(chatroomId: Int!, text: String!): sendMessageResult!
+    getChats: getChatsResult!
   }
 `;

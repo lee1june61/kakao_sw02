@@ -3,13 +3,10 @@ import { NEW_MESSAGE } from "../../constants";
 import pubsub from "../../pubsub";
 
 export default {
-  Mutation: {
-    sendMessage: protectedResolver(async (_, { recieverId, text }, { loggedInUser }) => {
+  Query: {
+    getChats: protectedResolver(async (_, { recieverId, text }, { loggedInUser }) => {
       try {
-        
         const sendedChat = ""
-
-        
         pubsub.publish(NEW_MESSAGE, { newMessage: { ...sendedChat } });
         return {
           ok: true,
