@@ -1,7 +1,7 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type Message {
+  type Chat {
     _id: Int!
     text: String!   
     senderId: Int!

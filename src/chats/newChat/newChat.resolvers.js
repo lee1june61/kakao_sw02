@@ -6,7 +6,7 @@ import { withFilter } from "apollo-server";
 export default {
   Subscription: {
     newChat: {
-      subscribe: async (_, _, { loggedInUser }, info) => {
+      subscribe: async (_, { loggedInUser }, info) => {
         return withFilter(
           () => pubsub.asyncIterator(NEW_MESSAGE),
           ({ newMessage }, { receiverId }) => {
