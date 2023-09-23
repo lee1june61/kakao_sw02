@@ -6,7 +6,7 @@ export default gql`
     error: String
     chats: [Chat]
   }
-  type Mutation {
+  type Query {
     getChatrooms: getChatroomsResult!
   }
 `;

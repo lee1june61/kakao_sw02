@@ -3,7 +3,7 @@ import express from "express";
 import { ApolloServer } from "apollo-server-express";
 import { typeDefs, resolvers } from "./schema.js";
 import { getUser } from "./users/users.utils.js";
-import { mongodb } from "./db/index.js";
+import { mongodb } from "../db/index.js";
 import http from "http";
 import logger from "morgan";
 

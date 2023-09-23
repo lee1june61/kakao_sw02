@@ -1,10 +1,24 @@
-import { Schema, model } from "mongoose";
-import { genSalt, hash } from "bcrypt";
+import { Schema } from "mongoose";
+//import { genSalt, hash } from "bcrypt";
 const UserSchema = Schema(
   {
-    id: { type: String, required: true, unique: true, lowercase: true },
-    password: { type: String, required: true, minlength: 8 },
-    nickname: { type: String, required: true, maxlength: 20, unique: true },
+    id: { 
+      type: String, 
+      required: true,
+      unique: true, 
+      lowercase: true 
+    },
+    password: { 
+      type: String, 
+      required: true, 
+      minlength: 8 
+    },
+    nickname: { 
+      type: String, 
+      required: true, 
+      maxlength: 20, 
+      unique: true 
+    },
     role: {
       type: String,
       required: true,
@@ -16,13 +30,29 @@ const UserSchema = Schema(
       required: true,
       enum: ["army", "navy", "airforce", "headquarters"],
     },
-    phonenumber: { type: String, required: true, trim: true, unique: true },
-    militarybase: { type: String, required: true },
+    phonenumber: { 
+      type: String, 
+      required: true, 
+      trim: true, 
+      unique: true 
+    },
+    militarybase: { 
+      type: String, 
+      required: 
+      true 
+    },
   },
   { collection: "User" }
 );
 
 UserSchema.index({ createdAt: 1, updatedAt: 1 });
+
+export default UserSchema;
+
+
+/*
+VIOLATED SRP! need to be seperated
+
 UserSchema.pre(
   "save",
   function (next) {
@@ -76,4 +106,6 @@ UserSchema.methods.generateToken = function (cb) {
     cb(null, user);
   });
 };
-export const UserModel = model("User", UserSchema);
+
+
+*/
