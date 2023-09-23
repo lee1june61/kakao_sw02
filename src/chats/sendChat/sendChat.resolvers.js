@@ -4,7 +4,7 @@ import pubsub from "../../pubsub";
 
 export default {
   Mutation: {
-    sendMessage: protectedResolver(async (_, { recieverId, text }, { loggedInUser }) => {
+    sendChat: protectedResolver(async (_, { recieverId, text }, { loggedInUser }) => {
       try {
         
         const sendedChat = ""

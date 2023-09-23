@@ -4,7 +4,7 @@ export default gql`
   type getChatsResult {
     ok: Boolean!
     error: String
-    Chats: [Message]
+    chats: [Chat]
   }
   type Mutation {
     getChats: getChatsResult!
