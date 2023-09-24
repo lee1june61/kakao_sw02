@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 
-const PostSchema = Schema(
+export const PostSchema = Schema(
   {
     title: { type: String, require: true, trim: true },
     content: { type: String, require: true, maxlength: 500, trim: true },
@@ -19,9 +19,8 @@ const PostSchema = Schema(
   { collection: "post", timestamps: true }
 );
 
-export const PostModel = model("Post", PostSchema);
 
-const CommentSchema = Schema(
+export const CommentSchema = Schema(
   {
     text: {
       type: String,
@@ -39,4 +38,3 @@ const CommentSchema = Schema(
   { collection: "comment" }
 );
 
-export const CommentModel = model("Comment", CommentSchema);
