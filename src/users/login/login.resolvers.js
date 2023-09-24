@@ -1,15 +1,12 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import { model } from "../../../db/model"
 
 export default {
   Mutation: {
     login: async (_, { username, password }) => {
       try {
-        const user = {
-            _id: 1,
-            password: "",
-            nickName: ""
-        }
+        
 
         const passwordOk = await bcrypt.compare(password, user.password);
         if (!passwordOk) {
