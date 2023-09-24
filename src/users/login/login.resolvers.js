@@ -1,13 +1,11 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { model } from "../../../db/model"
+import { model } from "../../../db/model";
 
 export default {
   Mutation: {
-    login: async (_, { username, password }) => {
+    login: async (_, { armynumber, password }) => {
       try {
-        
-
         const passwordOk = await bcrypt.compare(password, user.password);
         if (!passwordOk) {
           return {
@@ -18,7 +16,14 @@ export default {
         const now = new Date();
         //const duration = 5000;
         const duration = 5184000000;
-        const token = await jwt.sign({ id: user.id, iat: now.getTime(), eat: now.getTime() + duration}, process.env.SECRET_KEY);
+        const token = await jwt.sign(
+          {
+            id: user.armynumber,
+            iat: now.getTime(),
+            eat: now.getTime() + duration,
+          },
+          process.env.SECRET_KEY
+        );
 
         return {
           ok: true,
@@ -29,8 +34,8 @@ export default {
         console.log(e);
         return {
           ok: false,
-          error: "ERROR4106"
-        }
+          error: "ERROR4106",
+        };
       }
     },
   },

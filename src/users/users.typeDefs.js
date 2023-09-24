@@ -12,7 +12,7 @@ export default gql`
   }
 
   type User {
-    id: Int!
+    armynumber: String!
     nickname: String!
     password: String!
     role: String!

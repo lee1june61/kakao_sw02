@@ -2,7 +2,7 @@ import { Schema } from "mongoose";
 //import { genSalt, hash } from "bcrypt";
 const UserSchema = Schema(
   {
-    id: {
+    armynumber: {
       type: String,
       required: true,
       unique: true,

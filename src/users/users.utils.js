@@ -7,15 +7,15 @@ export const getUser = async (token) => {
       return null;
     }
     const { id, iat, eat } = await jwt.verify(token, process.env.SECRET_KEY);
-    const now = new Date()
-    
-    if(iat > now.getTime() || eat < now.getTime()){
+    const now = new Date();
+
+    if (iat > now.getTime() || eat < now.getTime()) {
       return null;
     }
 
     const user = {
-      id: 1,
-      username: "25div",
+      armynumber: 1,
+      nickname: "25div",
       activate: true,
     };
     if (user) {
