@@ -1,27 +1,22 @@
 import { Schema, model } from "mongoose";
 
-const PostSchema = Schema(
+export const PostSchema = Schema(
   {
     title: { type: String, require: true, trim: true },
-    content: { type: String, require: true, maxlength: 500, trim: true },
-    writer: { type: String, require: true },
-    recommand: { type: Number, require: true, default: 0 },
+    postNumber: { type: Number, require: true }, // postNumber 는 schema가 생성될 경우 +1 씩 증가되어야 한다.
+    text: { type: String, require: true, maxlength: 500 },
+    writerNickname: { type: String, require: true },
+    writer_id: { type: Schema.Types.ObjectId, ref: "user", require: true },
+    recommend: { type: Number, require: true, default: 0 },
     share: { type: Number, require: true, default: 0 },
-    Comment: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "comment",
-      },
-    ],
+    Comment: [{ type: Schema.Types.ObjectId, ref: "comment" }],
     createdAt: { type: Date, default: Date.now() },
     updatedAt: { type: Date },
   },
   { collection: "post", timestamps: true }
 );
 
-export const PostModel = model("Post", PostSchema);
-
-const CommentSchema = Schema(
+export const CommentSchema = Schema(
   {
     text: {
       type: String,
@@ -38,5 +33,3 @@ const CommentSchema = Schema(
   },
   { collection: "comment" }
 );
-
-export const CommentModel = model("Comment", CommentSchema);
