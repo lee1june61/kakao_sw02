@@ -2,53 +2,51 @@ import { Schema } from "mongoose";
 //import { genSalt, hash } from "bcrypt";
 const UserSchema = Schema(
   {
-    id: { 
-      type: String, 
+    armynumber: {
+      type: String,
       required: true,
-      unique: true, 
-      lowercase: true 
+      unique: true,
+      lowercase: true,
     },
-    password: { 
-      type: String, 
-      required: true, 
-      minlength: 8 
+    password: {
+      type: String,
+      required: true,
+      minlength: 8,
     },
-    nickname: { 
-      type: String, 
-      required: true, 
-      maxlength: 20, 
-      unique: true 
+    nickname: {
+      type: String,
+      required: true,
+      maxlength: 20,
+      unique: true,
     },
     role: {
       type: String,
       required: true,
       trim: true,
-      enum: ["user", "counselor", "admin"],
+      enum: ["client", "counselor", "admin"],
     },
     affiliation: {
       type: String,
       required: true,
       enum: ["army", "navy", "airforce", "headquarters"],
     },
-    phonenumber: { 
-      type: String, 
-      required: true, 
-      trim: true, 
-      unique: true 
+    phonenumber: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
     },
-    militarybase: { 
-      type: String, 
-      required: 
-      true 
+    militarybase: {
+      type: String,
+      required: true,
     },
   },
-  { collection: "User" }
+  { collection: "user" }
 );
 
 UserSchema.index({ createdAt: 1, updatedAt: 1 });
 
 export default UserSchema;
-
 
 /*
 VIOLATED SRP! need to be seperated
@@ -92,20 +90,5 @@ UserSchema.methods.comparePassword = function (plainPassword, cb) {
   });
 };
 
-UserSchema.methods.generateToken = function (cb) {
-  var user = this; // 만들어진 인스턴스를 user 변수에 저장
-  `
-  // jsonwebtoken을 이용해서 토큰 생성 (토큰발급)
-  // user._id는 db에 이미 저장된 _id
-  var token = jwt.sign(user._id.toHexString(), 'secretToken');
-  `;
-  // 생성된 토큰을 user.token에 저장
-  user.token = token;
-  user.save(function (err, user) {
-    if (err) return cb(err);
-    cb(null, user);
-  });
-};
-
-
+export const UserModel = model("User", UserSchema);
 */

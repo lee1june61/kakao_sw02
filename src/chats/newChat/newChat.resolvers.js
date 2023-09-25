@@ -2,7 +2,6 @@ import { NEW_MESSAGE } from "../../constants";
 import pubsub from "../../pubsub";
 import { withFilter } from "apollo-server";
 
-
 export default {
   Subscription: {
     newChat: {
