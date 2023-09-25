@@ -4,9 +4,9 @@ export default gql`
   type getChatroomsResult {
     ok: Boolean!
     error: String
-    chats: [Chat]
+    rooms: [Room]
   }
   type Query {
-    getChatrooms: getChatroomsResult!
+    getChatrooms(lastId: Int!): getChatroomsResult!
   }
 `;

@@ -4,8 +4,17 @@ export default gql`
   type Chat {
     _id: Int!
     text: String!   
-    senderId: Int!
-    receverId: Int!
+    sender: User!
+    receiver: User!
     createdAt: String!
+  }
+
+  type Room {
+    _id: Int!
+    counselor: User!
+    client: User!
+    create_at: String!
+    update_at: String!
+    chats: [Chat]
   }
 `;
