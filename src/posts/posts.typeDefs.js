@@ -11,4 +11,7 @@ export default gql`
     share: Int
     comment: [Comment]
   }
+  type Comment {
+    _id: Int!
+  }
 `;
