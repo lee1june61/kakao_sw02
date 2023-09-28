@@ -7,7 +7,6 @@ export default {
       try {
         const post = await dbModel.post.findOne({ postId }).exec();
         const comment = await dbModel.comment.find({ postId });
-        console.dir(comment);
         return {
           ok: true,
           message: `${post.postId}번 글을 가져왔습니다.`,

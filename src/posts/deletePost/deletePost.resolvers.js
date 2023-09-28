@@ -10,6 +10,12 @@ export default {
             throw "작성한 유저가 아닙니다.";
           }
           const post = await dbModel.post.findOneAndDelete({ postId });
+          const postComment = await dbModel.comment.findOneAndDelete({
+            postId,
+          });
+          if (postComment) {
+            throw "댓글이 존재합니다.";
+          }
           return {
             ok: true,
             message: `"${post.title}" 게시물을 삭제하였습니다.`,

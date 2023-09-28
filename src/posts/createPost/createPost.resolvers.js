@@ -7,7 +7,6 @@ export default {
     createPost: protectedResolver(
       async (_, { title, text, writerNickname }, { loggedInUser }) => {
         try {
-          console.log("1");
           if (!(writerNickname === loggedInUser.nickname)) {
             throw "로그인한 계정과 작성하는 글쓴이가 다릅니다.";
           }

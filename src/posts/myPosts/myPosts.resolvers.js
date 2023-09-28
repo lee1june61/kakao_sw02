@@ -10,7 +10,6 @@ export default {
             throw "사용자 게시물이 아닙니다.";
           }
           const posts = await dbModel.post.find({ writerNickname });
-          console.dir(posts);
           return {
             ok: true,
             message: "해당 사용자의 게시물을 가져왔습니다.",
