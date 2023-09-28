@@ -6,9 +6,11 @@ export default gql`
     postId: Int
     text: String
     writerNickname: String
-    writer_id: String
+    writerId: String
     recommend: Int
     share: Int
-    comment: [Comment]
+    commentCnt: Int
+    updatedAt: Date
+    createdAt: Date
   }
 `;

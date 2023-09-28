@@ -3,7 +3,6 @@ import { gql } from "apollo-server";
 export default gql`
   type createPostResult {
     ok: String
-    error: String
     message: String
   }
 

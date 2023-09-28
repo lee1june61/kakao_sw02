@@ -11,14 +11,14 @@ export default {
           if (!(writerNickname === loggedInUser.nickname)) {
             throw "로그인한 계정과 작성하는 글쓴이가 다릅니다.";
           }
-          const writer_id = loggedInUser._id; // 현재 로그인한 유저의 _id값
+          const writerId = loggedInUser._id; // 현재 로그인한 유저의 _id값
           const postId = await getPostId();
           const post = await dbModel.post.create({
             title,
             text,
             writerNickname,
             postId,
-            writer_id,
+            writerId,
           });
 
           return {
