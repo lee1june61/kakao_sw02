@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 require("dotenv").config();
-import { dbModel } from "../../../db/model";
+import dbModel from "../../../db/model";
 
 export default {
   Mutation: {
@@ -40,7 +40,7 @@ export default {
         return {
           ok: true,
           token: newToken,
-          userId: account._id,
+          userId: user._id,
         };
       } catch (e) {
         console.log(e);

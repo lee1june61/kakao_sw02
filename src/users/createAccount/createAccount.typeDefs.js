@@ -5,7 +5,7 @@ export default gql`
     ok: Boolean!
     error: String
     token: String
-    userId: Int
+    userId: String
   }
   type Mutation {
     createAccount(
