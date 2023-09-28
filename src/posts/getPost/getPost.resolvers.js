@@ -6,11 +6,13 @@ export default {
     getPost: protectedResolver(async (_, { postId }, { loggedInUser }) => {
       try {
         const post = await dbModel.post.findOne({ postId }).exec();
-
+        const comment = await dbModel.comment.find({ postId });
+        console.dir(comment);
         return {
           ok: true,
           message: `${post.postId}번 글을 가져왔습니다.`,
           post,
+          comment,
         };
       } catch (e) {
         console.error(e);

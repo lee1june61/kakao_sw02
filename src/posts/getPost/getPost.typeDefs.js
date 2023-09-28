@@ -5,6 +5,7 @@ export default gql`
     ok: Boolean!
     message: String
     post: Post
+    comment: [Comment]
   }
 
   type Query {
