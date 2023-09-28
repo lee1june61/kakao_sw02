@@ -32,13 +32,10 @@ const UserSchema = Schema(
     },
     phonenumber: {
       type: String,
-      required: true,
-      trim: true,
       unique: true,
     },
     militarybase: {
       type: String,
-      required: true,
     },
   },
   { collection: "user" }
