@@ -9,11 +9,13 @@ export default {
           if (!(writerNickname === loggedInUser.nickname)) {
             throw "글쓴이와 로그인한 유저가 다릅니다.";
           }
+          const offset = 1000 * 60 * 60 * 9;
+          const now = new Date(new Date().getTime() + offset);
           const afterPost = await dbModel.post.findOneAndUpdate(
             { postId },
-            { title, text }
+            { title, text, updatedAt: now },
+            { new: true }
           );
-          console.log(afterPost);
           return {
             ok: true,
             message: `${afterPost.postId}번 글을 수정하였습니다.`,

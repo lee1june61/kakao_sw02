@@ -11,7 +11,6 @@ export default {
           }
           const offset = 1000 * 60 * 60 * 9;
           const now = new Date(new Date().getTime() + offset);
-          console.log(now)
           const afterPost = await dbModel.comment.findOneAndUpdate(
             { _id },
             { text, updatedAt: now },
