@@ -1,9 +1,8 @@
 import { Schema, model } from "mongoose";
-
 export const PostSchema = Schema(
   {
     title: { type: String, require: true, trim: true },
-    postNumber: { type: Number, require: true }, // postNumber 는 schema가 생성될 경우 +1 씩 증가되어야 한다.
+    postId: { type: Number, require: true }, // postId 는 schema가 생성될 경우 +1 씩 증가되어야 한다.
     text: { type: String, require: true, maxlength: 500 },
     writerNickname: { type: String, require: true },
     writer_id: { type: Schema.Types.ObjectId, ref: "user", require: true },
