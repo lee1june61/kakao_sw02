@@ -16,6 +16,6 @@ export default gql`
     nickname: String!
     password: String!
     role: String!
-    militaraybase: String!
+    militarybase: String!
   }
 `;
