@@ -12,8 +12,6 @@ export default {
         password,
         nickname,
         role,
-        affiliation,
-        phonenumber,
         militarybase,
       }
     ) => {
@@ -25,8 +23,6 @@ export default {
           password: hashedPassword,
           nickname,
           role,
-          affiliation,
-          phonenumber,
           militarybase,
         });
 
