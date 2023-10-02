@@ -4,7 +4,8 @@
   "description": "kakao_sw02_backend",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server"
+    "dev": "nodemon --exec babel-node src/server",
+    "start" : "babel-node src/server"
   },
   "author": "",
   "license": "ISC",
