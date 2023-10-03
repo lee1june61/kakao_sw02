@@ -1,30 +1,37 @@
 import dbModel from "../../../db/model";
 import { protectedResolver } from "../../users/users.utils";
+import { getPostId } from "../posts.utils";
 
 export default {
   Mutation: {
-    createPost: async (_, { title, text, writerNickname, writer }, info) => {
-      try {
-        const res = await dbModel.post.create({
-          title,
-          text,
-          writerNickname,
-          writer,
-        });
-        console.dir(res);
-        console.dir(info);
-        console.dir(_);
-        return {
-          ok: true,
-          Post: { title: "test", text: "test", writer: "test" },
-        };
-      } catch (e) {
-        console.error(e);
-        return {
-          ok: false,
-          error: "글을 생성하지 못하였습니다.",
-        };
+    createPost: protectedResolver(
+      async (_, { title, text, writerNickname }, { loggedInUser }) => {
+        try {
+          if (!(writerNickname === loggedInUser.nickname)) {
+            throw "로그인한 계정과 작성하는 글쓴이가 다릅니다.";
+          }
+          const writerId = loggedInUser._id; // 현재 로그인한 유저의 _id값
+          const postId = await getPostId();
+          const post = await dbModel.post.create({
+            title,
+            text,
+            writerNickname,
+            postId,
+            writerId,
+          });
+
+          return {
+            ok: true,
+            message: `${post.title} 을 생성하였습니다.`,
+          };
+        } catch (e) {
+          console.error(e);
+          return {
+            ok: false,
+            error: "글을 생성하지 못하였습니다.",
+          };
+        }
       }
-    },
+    ),
   },
 };

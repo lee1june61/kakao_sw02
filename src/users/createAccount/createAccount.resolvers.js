@@ -5,10 +5,7 @@ import dbModel from "../../../db/model";
 
 export default {
   Mutation: {
-    createAccount: async (
-      _,
-      { armynumber, password, nickname, role, affiliation, phonenumber, militarybase }
-    ) => {
+    createAccount: async (_, { armynumber, password, nickname, role, affiliation, phonenumber, militarybase) => {
       try {
         const hashedPassword = await bcrypt.hash(password, 10);
         console.log(dbModel)
@@ -17,8 +14,6 @@ export default {
           password: hashedPassword,
           nickname,
           role,
-          affiliation,
-          phonenumber,
           militarybase,
         });
 
@@ -32,6 +27,7 @@ export default {
         return {
           ok: true,
           token: newToken,
+          userId: user._id,
         };
       } catch (e) {
         console.log(e);

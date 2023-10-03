@@ -9,7 +9,6 @@ export default {
         const user = await dbModel.user.findOne({
           armynumber: armynumber
         })
-
         const passwordOk = await bcrypt.compare(password, user.password);
         if (!passwordOk) {
           return {

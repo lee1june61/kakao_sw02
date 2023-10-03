@@ -25,20 +25,8 @@ const UserSchema = Schema(
       trim: true,
       enum: ["client", "counselor", "admin"],
     },
-    affiliation: {
-      type: String,
-      required: true,
-      enum: ["army", "navy", "airforce", "headquarters"],
-    },
-    phonenumber: {
-      type: String,
-      required: true,
-      trim: true,
-      unique: true,
-    },
     militarybase: {
       type: String,
-      required: true,
     },
   },
   { collection: "user" }

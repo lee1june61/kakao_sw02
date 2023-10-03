@@ -4,7 +4,9 @@
   "description": "kakao_sw02_backend",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon --exec babel-node src/server"
+    "dev": "nodemon --exec babel-node src/server",
+    "start": "babel-node src/server",
+    "build": "babel src -d dist"
   },
   "author": "",
   "license": "ISC",
@@ -12,7 +14,10 @@
     "@babel/cli": "^7.22.15",
     "@babel/core": "^7.22.19",
     "@babel/node": "^7.22.19",
+    "@babel/plugin-transform-runtime": "^7.22.15",
     "@babel/preset-env": "^7.22.15",
+    "@babel/runtime": "^7.23.1",
+    "babel-plugin-transform-remove-console": "^6.9.4",
     "eslint": "^8.49.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.0",
