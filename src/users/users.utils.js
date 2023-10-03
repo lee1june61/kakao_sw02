@@ -1,4 +1,5 @@
 import jwt from "jsonwebtoken";
+import dbModel from "../../db/model";
 require("dotenv").config();
 
 export const getUser = async (token) => {
@@ -8,16 +9,11 @@ export const getUser = async (token) => {
     }
     const { id, iat, eat } = await jwt.verify(token, process.env.SECRET_KEY);
     const now = new Date();
-
     if (iat > now.getTime() || eat < now.getTime()) {
       return null;
     }
 
-    const user = {
-      armynumber: 1,
-      nickname: "25div",
-      activate: true,
-    };
+    const user = await dbModel.user.findOne({ armynumber: id }).exec();
     if (user) {
       return user;
     } else {

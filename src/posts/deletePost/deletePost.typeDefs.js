@@ -1,11 +1,11 @@
 import { gql } from "apollo-server";
 
 export default gql`
-  type deletePost {
+  type deletePostResult {
     ok: Boolean
     message: String
   }
   type Mutation {
-    deletePost(postNumber: Int!, writerNickname: String!): deletePost
+    deletePost(postId: Int!, writerNickname: String!): deletePostResult
   }
 `;

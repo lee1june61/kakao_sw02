@@ -5,7 +5,7 @@ export default gql`
     ok: Boolean!
     error: String
     token: String
-    userId: Int
+    userId: String
   }
   type Mutation {
     createAccount(
@@ -13,9 +13,7 @@ export default gql`
       nickname: String!
       password: String!
       role: String!
-      affiliation: String!
-      phonenumber: String
-      militaraybase: String
+      militarybase: String!
     ): createAccountResult!
   }
 `;
