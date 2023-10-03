@@ -14,6 +14,6 @@ export default gql`
     createdAt: Date
   }
   type Comment {
-    _id: Int!
+    _id: String!
   }
 `;

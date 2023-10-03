@@ -1,91 +1,90 @@
 require("dotenv").config();
 import express from "express";
-import { ApolloServer } from "apollo-server-express";
-import { typeDefs, resolvers } from "./schema.js";
-import { getUser } from "./users/users.utils.js";
-import { mongodb } from "../db/index.js";
-import http from "http";
 import logger from "morgan";
-import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
-import { WebSocketServer } from 'ws';
-import { useServer } from 'graphql-ws/lib/use/ws';
+const { ApolloServer } = require("@apollo/server");
+import { typeDefs, resolvers } from "./schema";
+import { getUser } from "./users/users.utils";
+import http from "http";
+const cors = require("cors");
+const { expressMiddleware } = require("@apollo/server/express4");
+const bodyParser = require("body-parser");
+const { ApolloServerPluginDrainHttpServer } = require("@apollo/server/plugin/drainHttpServer");
+const { WebSocketServer } = require("ws");
+const { useServer } = require("graphql-ws/lib/use/ws");
+import { mongodb } from "../db/index.js";
+const { makeExecutableSchema } = require("@graphql-tools/schema");
 
-(async () => {
-  const PORT = process.env.PORT;
-  const apollo = new ApolloServer({
-    typeDefs,
-    resolvers,
-    context: async (ctx) => {
-      if (ctx.req) {
-        return {
-          loggedInUser: await getUser(ctx.req.headers.token),
-        };
-      } else {
-        const {
-          connection: { context },
-        } = ctx;
-        return {
-          loggedInUser: context.loggedInUser,
-        };
+const PORT = process.env.PORT;
+
+const app = express();
+
+app.use('/healthcheck', require('express-healthcheck')());
+
+app.use(logger("tiny"));
+
+app.use(cors());
+
+const schema = makeExecutableSchema({ typeDefs, resolvers });
+const httpServer = http.createServer(app);
+const wsServer = new WebSocketServer({
+  server: httpServer,
+  path: "/graphql",
+});
+
+const wsServerCleanup = useServer({ schema }, wsServer);
+
+mongodb();
+
+const apollo = new ApolloServer({
+  schema,
+  context: async (ctx) => {
+    if (ctx.req) {
+      return {
+        loggedInUser: await getUser(ctx.req.headers.token),
+      };
+    } else {
+      const {
+        connection: { context },
+      } = ctx;
+      return {
+        loggedInUser: context.loggedInUser,
       }
+    }
+  },
+  subscriptions: {
+    onConnect: async (ctx) => {
+      if (!ctx.token) {
+        throw new Error("please login to listen.");
+      }
+      const loggedInUser = await getUser(ctx.token);
+      return {
+        loggedInUser,
+      };
     },
-    subscriptions: {
-      onConnect: async ({ token }) => {
-        if (!token) {
-          throw new Error("please login to listen.");
-        }
-        const loggedInUser = await getUser(token);
+  },
+  formatError: (err) => {
+    console.log(err);
+  },
+  plugins: [
+    ApolloServerPluginDrainHttpServer({ httpServer }),
+    {
+      async serverWillStart() {
         return {
-          loggedInUser,
+          async drainServer() {
+            await wsServerCleanup.dispose();
+          },
         };
       },
     },
-    plugins: [
-      // Proper shutdown for the HTTP server.
-      ApolloServerPluginDrainHttpServer({ httpServer }),
-  
-      // Proper shutdown for the WebSocket server.
-      {
-        async serverWillStart() {
-          return {
-            async drainServer() {
-              await serverCleanup.dispose();
-            },
-          };
-        },
-      },
-    ],
-    formatError: (err) => {
-      console.log(err);
-    },
-  });
+  ],
+});
 
-  const app = express();
-  await mongodb();
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
 
-  app.use(logger("tiny"));
-
+(async function () {
   await apollo.start();
-
-  apollo.applyMiddleware({ app });
-
-  const httpServer = http.createServer(app);
-    // Creating the WebSocket server
-  const wsServer = new WebSocketServer({
-    // This is the `httpServer` we created in a previous step.
-    server: httpServer,
-    // Pass a different path here if app.use
-    // serves expressMiddleware at a different path
-    path: '/subscriptions',
-  });
-
-  // Hand in the schema we just created and have the
-  // WebSocketServer start listening.
-  const serverCleanup = useServer({ schema }, wsServer);
-  
-  httpServer.listen({ port: PORT }, () => {
-    console.log(`Server is running on http://localhost:${PORT}/`);
-  });
+  app.use("/graphql", bodyParser.json(), expressMiddleware(apollo));
 })();
+
+httpServer.listen({ port: PORT }, () => {
+  console.log(`Server is running on http://localhost:${PORT}/`);
+});

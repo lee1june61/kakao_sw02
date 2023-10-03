@@ -1,7 +1,6 @@
 import jwt from "jsonwebtoken";
 import dbModel from "../../db/model";
 require("dotenv").config();
-import dbModel from "../../db/model";
 export const getUser = async (token) => {
   try {
     if (!token) {

@@ -1,6 +1,6 @@
 import { NEW_MESSAGE } from "../../constants";
 import pubsub from "../../pubsub";
-import { withFilter } from "apollo-server";
+import { withFilter } from 'graphql-subscriptions';
 
 export default {
   Subscription: {
@@ -8,10 +8,10 @@ export default {
       subscribe: async (_, { loggedInUser }, info) => {
         return withFilter(
           () => pubsub.asyncIterator(NEW_MESSAGE),
-          ({ newMessage }, { receiverId }) => {
+          ({ newMessage }) => {
             return newMessage.receiverId === loggedInUser._id;
           }
-        )(_, { receiverId }, { loggedInUser }, info);
+        )(_, { loggedInUser }, info);
       },
     },
   },
