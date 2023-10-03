@@ -7,6 +7,6 @@ export default gql`
     chats: [Chat]
   }
   type Query {
-    getChats: getChatsResult!
+    getChats(receiverId: String!, lastId: Int): getChatsResult!
   }
 `;

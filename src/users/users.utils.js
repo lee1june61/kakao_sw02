@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import dbModel from "../../db/model";
 require("dotenv").config();
-
+import dbModel from "../../db/model";
 export const getUser = async (token) => {
   try {
     if (!token) {
@@ -12,8 +12,7 @@ export const getUser = async (token) => {
     if (iat > now.getTime() || eat < now.getTime()) {
       return null;
     }
-
-    const user = await dbModel.user.findOne({ armynumber: id }).exec();
+    const user = await dbModel.user.findOne({ _id: id })
     if (user) {
       return user;
     } else {

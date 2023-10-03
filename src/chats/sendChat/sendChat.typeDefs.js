@@ -7,6 +7,6 @@ export default gql`
     message: String
   }
   type Mutation {
-    sendChat(receiverId: Int!, text: String!): sendChatResult!
+    sendChat(receiverId: String!, text: String!): sendChatResult!
   }
 `;

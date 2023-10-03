@@ -13,7 +13,9 @@ export default gql`
       nickname: String!
       password: String!
       role: String!
-      militarybase: String!
+      affiliation: String!
+      phonenumber: String
+      militarybase: String
     ): createAccountResult!
   }
 `;

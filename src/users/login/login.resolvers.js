@@ -6,13 +6,9 @@ export default {
   Mutation: {
     login: async (_, { armynumber, password }) => {
       try {
-        const user = await dbModel.user.findOne({ armynumber });
-        if (!user) {
-          return {
-            ok: false,
-            error: "유저가 존재하지 않습니다.",
-          };
-        }
+        const user = await dbModel.user.findOne({
+          armynumber: armynumber
+        })
         const passwordOk = await bcrypt.compare(password, user.password);
         if (!passwordOk) {
           return {
@@ -25,7 +21,7 @@ export default {
         const duration = 5184000000;
         const token = await jwt.sign(
           {
-            id: user.armynumber,
+            id: user._id,
             iat: now.getTime(),
             eat: now.getTime() + duration,
           },
