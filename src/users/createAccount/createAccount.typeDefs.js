@@ -15,7 +15,7 @@ export default gql`
       role: String!
       affiliation: String!
       phonenumber: String
-      militaraybase: String
+      militarybase: String
     ): createAccountResult!
   }
 `;

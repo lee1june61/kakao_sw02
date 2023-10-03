@@ -1,11 +1,15 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { model } from "../../../db/model";
+import dbModel from "../../../db/model";
 
 export default {
   Mutation: {
     login: async (_, { armynumber, password }) => {
       try {
+        const user = await dbModel.user.findOne({
+          armynumber: armynumber
+        })
+
         const passwordOk = await bcrypt.compare(password, user.password);
         if (!passwordOk) {
           return {
@@ -18,7 +22,7 @@ export default {
         const duration = 5184000000;
         const token = await jwt.sign(
           {
-            id: user.armynumber,
+            id: user._id,
             iat: now.getTime(),
             eat: now.getTime() + duration,
           },

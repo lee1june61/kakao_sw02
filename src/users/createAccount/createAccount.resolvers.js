@@ -1,25 +1,17 @@
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 require("dotenv").config();
-import { dbModel } from "../../../db/model";
+import dbModel from "../../../db/model";
 
 export default {
   Mutation: {
     createAccount: async (
       _,
-      {
-        armynumber,
-        password,
-        nickname,
-        role,
-        affiliation,
-        phonenumber,
-        militarybase,
-      }
+      { armynumber, password, nickname, role, affiliation, phonenumber, militarybase }
     ) => {
       try {
         const hashedPassword = await bcrypt.hash(password, 10);
-
+        console.log(dbModel)
         const user = await dbModel.user.create({
           armynumber,
           password: hashedPassword,
@@ -40,7 +32,6 @@ export default {
         return {
           ok: true,
           token: newToken,
-          userId: account._id,
         };
       } catch (e) {
         console.log(e);

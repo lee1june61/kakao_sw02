@@ -6,6 +6,9 @@ import { getUser } from "./users/users.utils.js";
 import { mongodb } from "../db/index.js";
 import http from "http";
 import logger from "morgan";
+import { ApolloServerPluginDrainHttpServer } from '@apollo/server/plugin/drainHttpServer';
+import { WebSocketServer } from 'ws';
+import { useServer } from 'graphql-ws/lib/use/ws';
 
 (async () => {
   const PORT = process.env.PORT;
@@ -37,6 +40,21 @@ import logger from "morgan";
         };
       },
     },
+    plugins: [
+      // Proper shutdown for the HTTP server.
+      ApolloServerPluginDrainHttpServer({ httpServer }),
+  
+      // Proper shutdown for the WebSocket server.
+      {
+        async serverWillStart() {
+          return {
+            async drainServer() {
+              await serverCleanup.dispose();
+            },
+          };
+        },
+      },
+    ],
     formatError: (err) => {
       console.log(err);
     },
@@ -47,8 +65,6 @@ import logger from "morgan";
   app.use(express.json());
   app.use(express.urlencoded({ extended: true }));
 
-  app.use("/healthcheck", require("express-healthcheck")());
-
   app.use(logger("tiny"));
 
   await apollo.start();
@@ -56,8 +72,19 @@ import logger from "morgan";
   apollo.applyMiddleware({ app });
 
   const httpServer = http.createServer(app);
-  // apollo.installSubscriptionHandlers(httpServer); -> v3에서는 지원x
+    // Creating the WebSocket server
+  const wsServer = new WebSocketServer({
+    // This is the `httpServer` we created in a previous step.
+    server: httpServer,
+    // Pass a different path here if app.use
+    // serves expressMiddleware at a different path
+    path: '/subscriptions',
+  });
 
+  // Hand in the schema we just created and have the
+  // WebSocketServer start listening.
+  const serverCleanup = useServer({ schema }, wsServer);
+  
   httpServer.listen({ port: PORT }, () => {
     console.log(`Server is running on http://localhost:${PORT}/`);
   });
