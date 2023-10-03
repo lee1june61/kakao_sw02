@@ -2,7 +2,7 @@ import { gql } from "apollo-server";
 
 export default gql`
   type Chat {
-    _id: Int!
+    _id: String!
     text: String!   
     sender: User!
     receiver: User!
@@ -10,7 +10,7 @@ export default gql`
   }
 
   type Room {
-    _id: Int!
+    _id: String!
     counselor: User!
     client: User!
     create_at: String!
