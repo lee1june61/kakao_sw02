@@ -28,8 +28,6 @@ export default {
           },
           text: text
         })
-
-        console.log(sendedChat)
         
         pubsub.publish(NEW_MESSAGE, { newMessage: { ...sendedChat } });
         return {
