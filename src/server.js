@@ -31,37 +31,25 @@ const wsServer = new WebSocketServer({
   path: "/graphql",
 });
 
-const wsServerCleanup = useServer({ schema }, wsServer);
+const wsServerCleanup = useServer({ 
+  schema,
+  context: async (ctx) => {
+    if (!ctx.connectionParams.token) {
+      throw new Error("please login to listen.");
+    }
+    const loggedInUser = await getUser(ctx.connectionParams.token);
+    return {
+      loggedInUser,
+    };
+  },
+ }, 
+ wsServer
+);
 
 mongodb();
 
 const apollo = new ApolloServer({
   schema,
-  context: async (ctx) => {
-    if (ctx.req) {
-      return {
-        loggedInUser: await getUser(ctx.req.headers.token),
-      };
-    } else {
-      const {
-        connection: { context },
-      } = ctx;
-      return {
-        loggedInUser: context.loggedInUser,
-      }
-    }
-  },
-  subscriptions: {
-    onConnect: async (ctx) => {
-      if (!ctx.token) {
-        throw new Error("please login to listen.");
-      }
-      const loggedInUser = await getUser(ctx.token);
-      return {
-        loggedInUser,
-      };
-    },
-  },
   formatError: (err) => {
     console.log(err);
   },
@@ -79,10 +67,24 @@ const apollo = new ApolloServer({
   ],
 });
 
-
 (async function () {
   await apollo.start();
-  app.use("/graphql", bodyParser.json(), expressMiddleware(apollo));
+  app.use("/graphql", bodyParser.json(), expressMiddleware(apollo, {
+    context: async (ctx) => {
+      if (ctx.req) {
+        return {
+          loggedInUser: await getUser(ctx.req.headers.token),
+        };
+      } else {
+        const {
+          connection: { context },
+        } = ctx;
+        return {
+          loggedInUser: context.loggedInUser,
+        }
+      }
+    },
+  }));
 })();
 
 httpServer.listen({ port: PORT }, () => {

@@ -5,13 +5,15 @@ import { withFilter } from 'graphql-subscriptions';
 export default {
   Subscription: {
     newChat: {
-      subscribe: async (_, { loggedInUser }, info) => {
+      subscribe: async (_, { roomId }, { loggedInUser }, info) => {
         return withFilter(
           () => pubsub.asyncIterator(NEW_MESSAGE),
-          ({ newMessage }) => {
-            return newMessage.receiverId === loggedInUser._id;
+          ({ newMessage }, { roomId }) => {
+            console.log(loggedInUser)
+            //return newMessage.receiverId === loggedInUser._id && loggedInUser._id === receiverId;
+            return 1
           }
-        )(_, { loggedInUser }, info);
+        );
       },
     },
   },
