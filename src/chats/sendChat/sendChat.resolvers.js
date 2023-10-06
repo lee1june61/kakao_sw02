@@ -1,5 +1,5 @@
 import { protectedResolver } from "../../users/users.utils";
-import { NEW_MESSAGE } from "../../constants";
+import { NEW_CHAT } from "../../constants";
 import pubsub from "../../pubsub";
 import dbModel from "../../../db/model";
 
@@ -28,8 +28,7 @@ export default {
           },
           text: text
         })
-        
-        pubsub.publish(NEW_MESSAGE, { newMessage: { ...sendedChat } });
+        pubsub.publish(NEW_CHAT, { newChat: { ...sendedChat._doc } });
         return {
           ok: true,
           message: sendedChat,
