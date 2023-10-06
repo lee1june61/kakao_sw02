@@ -1,2 +1,2 @@
-export const NEW_MESSAGE = "NEW_MESSAGE";
+export const NEW_CHAT = "NEW_CHAT";
 export const CHATROOM_UPDATE = "CHATROOM_UPDATE";
